@@ -81,7 +81,7 @@ const forgotpassword =async(req, res)=> {
     }
     
     const resetToken = crypto.randomBytes(20).toString('hex');
-    user.resetToken = resetToken;
+    user.resettoken = resetToken;
     await user.save();
     
     const resetUrl = `https://myapp/forgotPassword?token=${resetToken}`;
