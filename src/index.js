@@ -12,7 +12,7 @@ const prepareAndStartServer=()=>{
    app.use('/api',apiRoutes);
    app.listen(PORT,()=>{
     console.log(`Server Started on PORT: ${PORT}`);
-    if(process.env.DB_SYNC==true)
+    if(process.env.DB_SYNC=="true")
     {
       db.sequelize.sync({alter:true});
     }
