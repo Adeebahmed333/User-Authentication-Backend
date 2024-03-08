@@ -38,6 +38,10 @@ module.exports = (sequelize, DataTypes) => {
       validate:{
         len:[8,50]
       }
+    },
+    resettoken:{
+      type:DataTypes.STRING,
+      allowNull:true
     }
   }, {
     sequelize,

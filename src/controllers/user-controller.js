@@ -1,5 +1,8 @@
 const UserService=require('../services/user-service');
-
+const crypto=require('crypto');
+const {createTransport}=require('nodemailer');
+const{User}=require('../models/index');
+const{EMAIL_PASS,EMAIL_ID}=require('../config/serverConfig');
 const userService=new UserService();
 
 const create =async (req,res)=>
@@ -68,9 +71,49 @@ const isAuthenticated=async(req,res)=>{
         
     }
 }
+const forgotpassword =async(req, res)=> {
+    const  email  = req.body.Email;
+    
+    // Check if email exists in the database
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    user.resetToken = resetToken;
+    await user.save();
+    
+    const resetUrl = `https://myapp/forgotPassword?token=${resetToken}`;
+    var transporter = createTransport({
+        service: 'gmail',
 
+        auth: {
+            user: EMAIL_ID,
+            pass: EMAIL_PASS
+        }
+    });
+
+    var mailOptions = {
+        from: 'adeebahmed3337@gmail.com',
+        to: email,
+        subject: "Reset Password",
+        html:`<h1>Reset Password</h1><h2>Click on the link to reset your password</h2><h3>${resetUrl}</h3>`
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+    
+    res.status(200).json({ message: 'A link to reset your password have been sent to your email.' });
+  };
 module.exports={
     create,
     signIn,
     isAuthenticated,
+    forgotpassword
 }

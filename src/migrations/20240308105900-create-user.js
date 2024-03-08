@@ -1,4 +1,7 @@
 'use strict';
+
+const { sequelize } = require('../models');
+
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
@@ -31,6 +34,10 @@ module.exports = {
         validate:{
           len:[8,50]
         }
+      },
+      resettoken:{
+       type:sequelize.STRING,
+       allowNull:true
       },
       createdAt: {
         allowNull: false,

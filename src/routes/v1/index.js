@@ -15,4 +15,7 @@ UserController.signIn
 router.get('/isAuthenticated',
 UserController.isAuthenticated
 );
+router.post('/forgetpassword',
+UserController.forgotpassword
+)
 module.exports=router;
