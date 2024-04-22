@@ -1,4 +1,4 @@
-# Welcome to  User Authentication Backend
+# Welcome to User Authentication Backend
 
 ## Project Setup
 
